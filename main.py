@@ -12,48 +12,73 @@ root.title("YouTube Downloader")
 
 #yt.streams.filter(progressive=True, subtype='mp4').order_by('resolution').desc().last().download()
 
-# Get url
-#url = entry1.get()
-#print(url)
-#url = input("Enter link: ")
+
 
 # Entries
 entry1 = Entry(root,bg="#DAF7A6",fg="#3D0909",width='20')
+
+
+#url = 'https://www.youtube.com/watch?v=YaG5SAw1n0c'
 
 # Definitions
 def onClick(x):
     webbrowser.open(x,new=1)
 
 def Submit():
+
     iWindow = Toplevel(root)
     iWindow.geometry('1000x200')
     iWindow.config(bg='black')
+    global url
+    url = entry1.get()
 
-    def search_for_file_path(*args):
+    def search_for_file_path():
         currdir = os.getcwd()
         tempdir = filedialog.askdirectory(parent=root, initialdir=currdir, title='Please select a directory')
         if len(tempdir) > 0:
             print("You chose: %s" % tempdir)
-        return tempdir
+
+        elif len(tempdir) == 0:
+            print("None chosen")
+            return None
 
     #file_path_variable = search_for_file_path()
     #print("\nfile_path_variable = ", file_path_variable)
 
     def downloadVideo():
-        url = 'https://www.youtube.com/watch?v=YaG5SAw1n0c'
+        url
         yt = YouTube(url)
+        file_path_variable = ""
         file_path_variable = search_for_file_path()
-        d = yt.streams.filter(progressive=True, subtype='mp4').order_by('resolution').desc().last().download(file_path_variable)
-        if d is None:
-            a = "Not downloaded"
-        elif d:
-            a = "Successfully downloaded"
-        else:
-            a = "Not downloaded"
-        statusLabel = Label(iWindow,text=a,bg='black',fg='green')
-        statusLabel.pack()
 
-    url = 'https://www.youtube.com/watch?v=YaG5SAw1n0c'
+        if file_path_variable == "":
+            a = "Not downloaded"
+            statusLabel = Label(iWindow, text=a, bg='black', fg='red')
+            statusLabel.pack()
+            print("Error code 3")
+        else:
+            d = yt.streams.filter(progressive=True, subtype='mp4').order_by('resolution').desc().last().download(file_path_variable)
+            if d is None:
+                a = "Not downloaded"
+                statusLabel = Label(iWindow, text=a, bg='black', fg='red')
+                statusLabel.pack()
+                print("Error code 1")
+            elif d:
+                a = "Successfully downloaded"
+                statusLabel = Label(iWindow, text=a, bg='black', fg='green')
+                statusLabel.pack()
+                print(a)
+            else:
+                a = "Not downloaded"
+                statusLabel = Label(iWindow, text=a, bg='black', fg='red')
+                statusLabel.pack()
+                print("Error code 2")
+
+
+
+
+
+
 
     yt = YouTube(url)
     vidTitle = Label(iWindow,bg='black',fg='yellow',text=yt.title,font=("Georgia",17,'bold'))
