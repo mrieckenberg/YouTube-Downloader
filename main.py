@@ -6,19 +6,13 @@ import os
 
 # Root
 root = Tk()
-root.geometry('650x150')
-root.config(bg="#3D0909")
+root.geometry('550x150')
+root.config(bg="#660066")
 root.title("YouTube Downloader")
-
-#yt.streams.filter(progressive=True, subtype='mp4').order_by('resolution').desc().last().download()
-
 
 
 # Entries
-entry1 = Entry(root,bg="#DAF7A6",fg="#3D0909",width='20')
-
-
-#url = 'https://www.youtube.com/watch?v=YaG5SAw1n0c'
+entry1 = Entry(root,bg="#99FFCC",fg="#000033",width='50',justify='center',font=('Georgia',12,'bold'))
 
 # Definitions
 def onClick(x):
@@ -27,16 +21,19 @@ def onClick(x):
 def Submit():
 
     iWindow = Toplevel(root)
-    iWindow.geometry('1000x200')
-    iWindow.config(bg='black')
+    iWindow.geometry('800x150')
+    iWindow.config(bg='#003333')
+    iWindow.title("Video Information")
     global url
     url = entry1.get()
+    #url = 'https://www.youtube.com/watch?v=95SYdjRVCR0'
 
     def search_for_file_path():
         currdir = os.getcwd()
         tempdir = filedialog.askdirectory(parent=root, initialdir=currdir, title='Please select a directory')
         if len(tempdir) > 0:
             print("You chose: %s" % tempdir)
+            return tempdir
 
         elif len(tempdir) == 0:
             print("None chosen")
@@ -48,62 +45,51 @@ def Submit():
     def downloadVideo():
         url
         yt = YouTube(url)
-        file_path_variable = ""
         file_path_variable = search_for_file_path()
-
         if file_path_variable == "":
             a = "Not downloaded"
             statusLabel = Label(iWindow, text=a, bg='black', fg='red')
             statusLabel.pack()
-            print("Error code 3")
+            print(a)
         else:
-            d = yt.streams.filter(progressive=True, subtype='mp4').order_by('resolution').desc().last().download(file_path_variable)
-            if d is None:
-                a = "Not downloaded"
-                statusLabel = Label(iWindow, text=a, bg='black', fg='red')
-                statusLabel.pack()
-                print("Error code 1")
-            elif d:
-                a = "Successfully downloaded"
+            #yt = YouTube(url)
+            d = yt.streams.filter(adaptive=True).first()
+            #print(d)
+            d.download(file_path_variable)
+
+            if bool(d) is True:
+                a = "Successful download"
                 statusLabel = Label(iWindow, text=a, bg='black', fg='green')
                 statusLabel.pack()
                 print(a)
             else:
-                a = "Not downloaded"
-                statusLabel = Label(iWindow, text=a, bg='black', fg='red')
-                statusLabel.pack()
-                print("Error code 2")
-
-
-
-
-
-
+                print("Didn't work")
 
     yt = YouTube(url)
-    vidTitle = Label(iWindow,bg='black',fg='yellow',text=yt.title,font=("Georgia",17,'bold'))
+    vidTitle = Label(iWindow,bg='#003333',fg='#CCFF33',text=yt.title,font=("Georgia",17,'bold'))
     vidTitle.pack()
-    vidURL = Label(iWindow,bg='black',fg='yellow',text=url,font=("Georgia",17,'bold'))
+    vidURL = Label(iWindow,bg='#003333',fg='#33FFFF',text=url,font=("Georgia",12,"underline"))
     vidURL.pack()
+    seeVid = Button(iWindow, text="See video", bg="#E53F83", fg='white', font=("Georgia", 12, 'bold'),command=lambda: onClick(url))
+    seeVid.pack(pady=5)
     downloadButton = Button(iWindow,text="Download",font=("Georgia",10,'bold'),bg='#09DBD3',fg='#B8024C',command=downloadVideo)
     downloadButton.pack()
-    seeVid = Button(iWindow,text="See video",bg="#E53F83",fg='white',font=("Georgia",12,'bold'),command=lambda: onClick(url))
-    seeVid.pack()
+    #seeVid = Button(iWindow,text="See video",bg="#E53F83",fg='white',font=("Georgia",12,'bold'),command=lambda: onClick(url))
 
 
 
 
 
 # Labels
-Label1 = Label(root,bg="#3D0909",fg="white",text="Enter link below",font=("Georgia",17,'bold'))
+Label1 = Label(root,bg="#660066",fg="#CCFFCC",text="Enter your link below",font=("Georgia",17,'bold'))
 
 # Buttons
-button1 = Button(root,bg='#0BAC95',fg='#F9120B',text='Submit',pady=10,command=Submit)
+button1 = Button(root,bg='#3366FF',fg='#330000',text='Submit',font=("Georgia",12,'bold'),pady=10,command=Submit)
 
 # Pack
-Label1.pack()
-entry1.pack()
-button1.pack()
+Label1.pack(ipady=1)
+entry1.pack(pady=10)
+button1.pack(pady=2)
 
 
 
