@@ -70,9 +70,9 @@ def Submit():
     vidTitle.pack()
     vidURL = Label(iWindow,bg='#003333',fg='#33FFFF',text=url,font=("Georgia",12,"underline"))
     vidURL.pack()
-    seeVid = Button(iWindow, text="See video", bg="#E53F83", fg='white', font=("Georgia", 12, 'bold'),command=lambda: onClick(url))
+    seeVid = Button(iWindow, text="See video", bg="#9999FF", fg='#000033', font=("Georgia", 12, 'bold'),command=lambda: onClick(url))
     seeVid.pack(pady=5)
-    downloadButton = Button(iWindow,text="Download",font=("Georgia",10,'bold'),bg='#09DBD3',fg='#B8024C',command=downloadVideo)
+    downloadButton = Button(iWindow,text="Download",font=("Georgia",10,'bold'),bg='#339900',fg='#000033',command=downloadVideo)
     downloadButton.pack()
     #seeVid = Button(iWindow,text="See video",bg="#E53F83",fg='white',font=("Georgia",12,'bold'),command=lambda: onClick(url))
 
@@ -81,7 +81,7 @@ def Submit():
 
 
 # Labels
-Label1 = Label(root,bg="#660066",fg="#CCFFCC",text="Enter your link below",font=("Georgia",17,'bold'))
+Label1 = Label(root,bg="#660066",fg="#CCFF33",text="Enter your link below",font=("Georgia",17,'bold'))
 
 # Buttons
 button1 = Button(root,bg='#3366FF',fg='#330000',text='Submit',font=("Georgia",12,'bold'),pady=10,command=Submit)
